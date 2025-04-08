@@ -17,7 +17,7 @@ namespace PopIt
         IEnumerator Start()
         {
             yield return new WaitForSeconds(0.02f);
-            SceneManager.LoadScene("Menu");
+            SceneManager.LoadScene(SceneEnum.Menu.ToString());
         }
     }
 }

@@ -10,15 +10,21 @@ namespace PopIt
         public AudioClip bgm;
         public static bool globalSoundState;
 
+        private AudioSource audioSource;
+
         void Awake()
         {
             //globalSoundState = true;
-            DontDestroyOnLoad(this);
+            audioSource = GetComponent<AudioSource>();
+            DontDestroyOnLoad(gameObject);
             instance = this;
 
             //Enable audio & music in the first run
+            // 최초 방문일 때 소리크기에 대한 희망값을 변수에 저장
+            Debug.Log("첫 번째 방문인지 확인");
             if (!PlayerPrefs.HasKey("Inited"))
             {
+                Debug.Log("첫 번째 방문으로 감지됨");
                 print("Game is Inited!");
                 PlayerPrefs.SetInt("Inited", 1);
                 PlayerPrefs.SetInt("SoundState", 1);
@@ -43,7 +49,7 @@ namespace PopIt
 
         void Update()
         {
-            if (!GetComponent<AudioSource>().isPlaying)
+            if (!audioSource.isPlaying)
             {
                 playSfx(bgm);
             }
@@ -51,13 +57,13 @@ namespace PopIt
 
         void playSfx(AudioClip _clip)
         {
-            GetComponent<AudioSource>().clip = _clip;
-            GetComponent<AudioSource>().Play();
+            audioSource.clip = _clip;
+            audioSource.Play();
         }
 
         public void ToggleMusic()
         {
-            GetComponent<AudioSource>().mute = !GetComponent<AudioSource>().mute;
+            audioSource.mute = !audioSource.mute;
         }
 
         public void ToggleSound()

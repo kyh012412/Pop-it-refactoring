@@ -13,8 +13,9 @@ namespace PopIt
 
         void Awake()
         {
+            // 어느 씬에서 PlayMode에 진입해도 Init 씬을 거쳐서 정상적으로 동작하게 하는 코드
             if (!GameObject.FindGameObjectWithTag("MusicPlayer"))
-                SceneManager.LoadScene("Init");
+                SceneManager.LoadScene(SceneEnum.Init.ToString());
         }
     }
 }

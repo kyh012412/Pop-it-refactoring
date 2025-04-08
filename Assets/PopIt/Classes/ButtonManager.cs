@@ -73,7 +73,7 @@ namespace PopIt
             buttonLinks++;
 
             //Look forward in row
-            for (int i = buttonPositionID + 1; i < BoardManager.instance.boardSize.y; i++)
+            for (int i = buttonPositionID + 1; i < BoardManager.instance.boardSize.y; i++) // BoardManager.instance.boardSize.y 가 BoardManager.instance.boardSize.x가 되어야 함
             {
                 if (BoardManager.instance.GetBoardButton((int)(buttonColorID * BoardManager.instance.boardSize.x) + i).GetComponent<ButtonManager>().buttonState != ButtonStates.Finalized)
                 {
@@ -270,5 +270,10 @@ namespace PopIt
             BoardManager.instance.UpdateFinalizedButtonsArray(gameObject);
         }
 
+        public int GetRealIndex()
+        {
+            int realIndex = (int)(buttonColorID * BoardManager.instance.boardSize.y) + buttonPositionID;
+            return realIndex;
+        }
     }
 }

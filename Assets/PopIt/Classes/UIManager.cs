@@ -99,6 +99,7 @@ namespace PopIt
 
         public void HideTurnChangeButton()
         {
+            if (!turnChangeButton.gameObject.activeSelf) return;
             turnChangeButton.GetComponent<Animator>().Play("PopOut");
             Invoke("HideTurnChangeButtonDelayed", 0.4f);
         }
@@ -180,7 +181,7 @@ namespace PopIt
         public void LoadMenu()
         {
             FbSfxPlayer.instance.PlaySfx(0);
-            SceneManager.LoadScene("Menu");
+            SceneManager.LoadScene(SceneEnum.Menu.ToString());
         }
 
         /// <summary>
@@ -191,9 +192,9 @@ namespace PopIt
         {
             GameObject p = Instantiate(popEffect, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0)) as GameObject;
             p.name = "PopEffect";
-            p.transform.parent = go.transform;
+            p.transform.SetParent(go.transform);
             p.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
-            p.transform.parent = canvasHolder.transform;
+            p.transform.SetParent(canvasHolder.transform);
             p.transform.localScale = new Vector3(1, 1, 1);
         }
 

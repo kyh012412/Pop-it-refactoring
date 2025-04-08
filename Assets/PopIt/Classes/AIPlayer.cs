@@ -51,29 +51,6 @@ namespace PopIt
             StartCoroutine(PlayDelayedCo());
         }
 
-
-        /*public void PlayDelayed()
-        {
-            print("<b>AI is playing</b>");
-
-            //#1 - Init data arrays & create board data
-            UpdateBoardDetailsOnAI();
-
-            //#2 - Find best row to play based on calculated weight
-            int bestRow = FindBestRow();
-
-            //#3 - Find proper buttons to play
-            FindProperButtons(bestRow);
-
-            //#4 - make the move & end the turn
-            if(selectedButtons.Count > 0)
-            {
-                //selectedButtons[0].GetComponent<ButtonManager>().ButtonClicked();
-                StartCoroutine(SelectButtonsCo());
-            }
-        }*/
-
-
         public IEnumerator PlayDelayedCo()
         {
             print("<b>AI is playing</b>");
@@ -111,7 +88,7 @@ namespace PopIt
             boardData.Clear();
             rowWeight.Clear();
 
-            for (int i = 0; i < BoardManager.instance.boardSize.x; i++)
+            for (int i = 0; i < BoardManager.instance.boardSize.x; i++) // BoardManager.instance.boardSize.x가 아니라 BoardManager.instance.boardSize.y??
             {
                 boardData.Add(new BoardData());
                 boardData[i].rowData = new List<bool>();
@@ -220,17 +197,18 @@ namespace PopIt
 
             for (int i = 0; i < BoardManager.instance.boardSize.y; i++)
             {
-                int btnLinks = BoardManager.instance.GetBoardButton((int)(selectedRow * BoardManager.instance.boardSize.y) + i).GetComponent<ButtonManager>().buttonLinks;
+                GameObject targetButton = BoardManager.instance.GetBoardButton((int)(selectedRow * BoardManager.instance.boardSize.y) + i);
+                int btnLinks = targetButton.GetComponent<ButtonManager>().buttonLinks;
                 if (btnLinks > biggestLink)
                 {
                     bestStartingButtons.Clear();
                     biggestLink = btnLinks;
                     bestStartingButtonIndex = i;
-                    bestStartingButtons.Add(BoardManager.instance.GetBoardButton((int)(selectedRow * BoardManager.instance.boardSize.y) + i));
+                    bestStartingButtons.Add(targetButton);
                 }
                 else if (btnLinks == biggestLink)
                 {
-                    bestStartingButtons.Add(BoardManager.instance.GetBoardButton((int)(selectedRow * BoardManager.instance.boardSize.y) + i));
+                    bestStartingButtons.Add(targetButton);
                 }
             }
 
@@ -240,6 +218,7 @@ namespace PopIt
                 print("bestStartingButtons #" + j + " => " + bestStartingButtons[j].name);
             }
 
+            // 최적의 후보중 임의의 객체를 최적의 단 하나의 버튼으로 대입
             bestStartingButton = bestStartingButtons[Random.Range(0, bestStartingButtons.Count)];
             print("bestStartingButton: " + bestStartingButton.name);
             selectedButtons.Add(bestStartingButton);
@@ -248,28 +227,38 @@ namespace PopIt
             //We also need to randomize the size of buttons a bit
             int rndSizeOfSelection = Random.Range(1, 10);
             print("==> AI rndSizeOfSelection: " + rndSizeOfSelection);
-            int firstSelectedButtonRealIndex = (int)((bestStartingButton.GetComponent<ButtonManager>().buttonColorID * BoardManager.instance.boardSize.y) + bestStartingButton.GetComponent<ButtonManager>().buttonPositionID);
+            int firstSelectedButtonRealIndex = bestStartingButton.GetComponent<ButtonManager>().GetRealIndex();
             int firstSelectedButtonColorID = bestStartingButton.GetComponent<ButtonManager>().buttonColorID;
             //<
             if (rndSizeOfSelection >= 2)
-                if (!BoardManager.instance.IsBoardButtonFinalized(firstSelectedButtonRealIndex - 1) && BoardManager.instance.GetBoardButtonColorID(firstSelectedButtonRealIndex - 1) == firstSelectedButtonColorID)
-                    selectedButtons.Add(BoardManager.instance.boardButtons[firstSelectedButtonRealIndex - 1]);
+                CheckSelectableButton(firstSelectedButtonRealIndex - 1, firstSelectedButtonColorID, ref selectedButtons);
             //<<
             if (rndSizeOfSelection >= 3)
-                if (!BoardManager.instance.IsBoardButtonFinalized(firstSelectedButtonRealIndex - 2) && BoardManager.instance.GetBoardButtonColorID(firstSelectedButtonRealIndex - 2) == firstSelectedButtonColorID)
-                    selectedButtons.Add(BoardManager.instance.boardButtons[firstSelectedButtonRealIndex - 2]);
+                CheckSelectableButton(firstSelectedButtonRealIndex - 2, firstSelectedButtonColorID, ref selectedButtons);
             //>
             if (rndSizeOfSelection >= 4)
-                if (!BoardManager.instance.IsBoardButtonFinalized(firstSelectedButtonRealIndex + 1) && BoardManager.instance.GetBoardButtonColorID(firstSelectedButtonRealIndex + 1) == firstSelectedButtonColorID)
-                    selectedButtons.Add(BoardManager.instance.boardButtons[firstSelectedButtonRealIndex + 1]);
+                CheckSelectableButton(firstSelectedButtonRealIndex + 1, firstSelectedButtonColorID, ref selectedButtons);
             //>>
             if (rndSizeOfSelection >= 5)
-                if (!BoardManager.instance.IsBoardButtonFinalized(firstSelectedButtonRealIndex + 2) && BoardManager.instance.GetBoardButtonColorID(firstSelectedButtonRealIndex + 2) == firstSelectedButtonColorID)
-                    selectedButtons.Add(BoardManager.instance.boardButtons[firstSelectedButtonRealIndex + 2]);
+                CheckSelectableButton(firstSelectedButtonRealIndex + 2, firstSelectedButtonColorID, ref selectedButtons);
 
             //Debug
             print("<b>Final AI decision Count (total buttons): </b>" + selectedButtons.Count);
         }
 
+        public void CheckSelectableButton(int comparableIndex, int checkColorId, ref List<GameObject> selectedButtons)
+        {
+            // 인덱스 초과시 배제
+            if (comparableIndex < 0 || comparableIndex >= BoardManager.instance.boardSize.x * BoardManager.instance.boardSize.y) return;
+
+            // 서로 다른색이면 배제
+            if (BoardManager.instance.GetBoardButtonColorID(comparableIndex) != checkColorId) return;
+
+            // 이미 Finalized 되었다면 배제
+            if (BoardManager.instance.IsBoardButtonFinalized(comparableIndex)) return;
+
+            // 후보에 추가
+            selectedButtons.Add(BoardManager.instance.boardButtons[comparableIndex]);
+        }
     }
 }

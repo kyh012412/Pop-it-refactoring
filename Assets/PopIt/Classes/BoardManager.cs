@@ -75,7 +75,8 @@ namespace PopIt
         public bool IsBoardButtonFinalized(int btnID)
         {
             //Bug prevention. if for any reason a bad id is given, we should gracefully handle it here.
-            if (btnID <= 0 || btnID >= (boardSize.x * boardSize.y))
+            // 예외 처리
+            if (btnID < 0 || btnID >= (boardSize.x * boardSize.y))
             {
                 print("<color=red>Wrong array index is provided: </color>" + btnID);
                 return true;
@@ -89,6 +90,7 @@ namespace PopIt
 
         public int GetBoardButtonColorID(int btnID)
         {
+            Debug.Log($"btnId : {btnID}");
             return boardButtons[btnID].GetComponent<ButtonManager>().buttonColorID;
         }
 

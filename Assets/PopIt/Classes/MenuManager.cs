@@ -44,7 +44,7 @@ namespace PopIt
                 return;
             canClick = false;
 
-            SceneManager.LoadScene("Game");
+            SceneManager.LoadScene(SceneEnum.Game.ToString());
         }
 
         public void DisplayHelpPanel()

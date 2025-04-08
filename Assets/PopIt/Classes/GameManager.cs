@@ -21,7 +21,7 @@ namespace PopIt
         public List<GameObject> sessionSelectedButtons;
 
         //Turns
-        public static int turnCounter;
+        public static int turnCounter; //2의 배수 여부로 차례 결정하는 변수
         public static bool isP1Turn;
 
         //Game states
@@ -41,7 +41,7 @@ namespace PopIt
             sessionSelectedButtons.Clear();
 
             //Get gamemode from playerprefs
-            if(PlayerPrefs.GetInt("GameMode") == 1)
+            if (PlayerPrefs.GetInt("GameMode") == 1)
                 gameMode = GameModes.SinglePlayer;
             else
                 gameMode = GameModes.TwoPlayers;
@@ -113,7 +113,10 @@ namespace PopIt
             }
 
             //Update button states
-            BoardManager.instance.UpdateButtonStates();
+            if (gameMode == GameModes.SinglePlayer)
+            {
+                BoardManager.instance.UpdateButtonStates();
+            }
 
             //Update the turn
             turnCounter++;
@@ -126,9 +129,11 @@ namespace PopIt
                 print("P1's turn");
 
                 //Update UI
+                // 상단에 뜨는 것
                 UIManager.instance.DisplayTurnByOnUI("P1");
 
                 //UI message
+                // 하단에 뜨는 메세지, 자체 생성될 Prefab내에 awake로 어느 객체를 부모로 가질지 정의 되어있음
                 UIManager.instance.DiplayIngameMessage(new Vector3(0, 0, 0), "ingame-message", "Player 1's Turn", true);
 
                 //Restore player ability to click on buttons
@@ -210,7 +215,7 @@ namespace PopIt
             if (isP1Turn)
             {
                 //Play win sfx if p2 is winner and lose sfx if AI won the game
-                if(gameMode == GameModes.SinglePlayer)
+                if (gameMode == GameModes.SinglePlayer)
                 {
                     winner = "AI";
                     loser = "Player 1";

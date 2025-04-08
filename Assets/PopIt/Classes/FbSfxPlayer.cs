@@ -26,6 +26,7 @@ namespace PopIt
 
         public void PlaySfx(int sfxID = -1, float vol = 1f)
         {
+            // 인덱스가 없으면 사용가능한 랜덤 index로 변경
             int clipID = sfxID;
             if (clipID == -1)
                 clipID = Random.Range(0, availableSfx.Length);
