@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 94e0f673b7a1ca44db7e586113273b18
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 244309
+  packageName: Pop It 3d Fidget, two players game with AI
+  packageVersion: 1.1.1
+  assetPath: Assets/PopIt/Animations/ResultPanel.anim
+  uploadId: 708974

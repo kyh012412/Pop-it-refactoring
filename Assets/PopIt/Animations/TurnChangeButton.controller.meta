@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ef5c31fa57c3bd646844bf0828065c03
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 244309
+  packageName: Pop It 3d Fidget, two players game with AI
+  packageVersion: 1.1.1
+  assetPath: Assets/PopIt/Animations/TurnChangeButton.controller
+  uploadId: 708974

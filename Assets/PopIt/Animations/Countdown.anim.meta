@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a3ee6bd595c60114ebe09447e1e6d82c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 244309
+  packageName: Pop It 3d Fidget, two players game with AI
+  packageVersion: 1.1.1
+  assetPath: Assets/PopIt/Animations/Countdown.anim
+  uploadId: 708974

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 479fef242607bbc49a4b1d3a95881a0c
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 244309
+  packageName: Pop It 3d Fidget, two players game with AI
+  packageVersion: 1.1.1
+  assetPath: Assets/PopIt/Prefabs/InitLoader.prefab
+  uploadId: 708974
